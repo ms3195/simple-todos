@@ -49,18 +49,26 @@ form {
   position: relative;
 }
 
-.new-task input {
+.new-employee input {
   box-sizing: border-box;
   padding: 10px 0;
   background: transparent;
   border: none;
-  width: 100%;
-  padding-right: 80px;
+  width: 20%;
+  padding-right: 10px;
   font-size: 1em;
 }
 
-.new-task input:focus{
+.new-employee input:focus{
   outline: 0;
+}
+
+.submit {
+  margin-top: 20px;
+  padding: 10px 0;
+  width: 20%;
+  padding-right: 5px;
+  font-size: 1em;
 }
 
 ul {
@@ -120,7 +128,7 @@ header .hide-completed {
     clear: both;
   }
 
-  .new-task input {
+  .new-employee input {
     padding-bottom: 5px;
   }
 }

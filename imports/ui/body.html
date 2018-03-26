@@ -1,21 +1,28 @@
 <body>
   <div class="container">
     <header>
-      <h1>Todo List</h1>
+      <h1>IP&O Roster</h1>
 
       <label class="hide-completed">
         <input type="checkbox" />
-        Hide Completed tasks
+        Hide Completed employees
       </label>
 
-      <form class="new-task">
-        <input type="text" name="text" placeholder="Type to add new tasks" />
-      </form>
+      {{> loginButtons}}
+
+      {{#if currentUser}}
+        <form class="new-employee">
+          <input type="text" name="emplId" placeholder="Employee ID" />
+          <input type="text" name="emplName" placeholder="Employee Name" />
+          <input type="number" name="salary" placeholder="Annual Salary" />
+          <input type="text" name="title" placeholder="Job Title" />
+        </form>
+      {{/if}}
     </header>
 
     <ul>
-      {{#each tasks}}
-        {{> task}}
+      {{#each employees}}
+        {{> employee}}
       {{/each}}
     </ul>
   </div>
