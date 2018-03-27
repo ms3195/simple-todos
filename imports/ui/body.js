@@ -19,7 +19,7 @@ Template.body.helpers({
     return Employee.find({}, {sort: {createdAt: -1} });
   },
 });
-
+// SUBMIT FUNCTION DOES NOT WORK
 Template.body.events({
   'submit .new-employee'(event) {
     // Prevent default browser form submit (no clue what this does)
@@ -31,7 +31,6 @@ Template.body.events({
     const emplName = target.emplName.value;
     const salary = target.salary.value;
     const title = target.title.value;
-    console.log(event)
     // Insert an employee into the collection (the database)
     Meteor.call('employee.insert', emplId);
     Meteor.call('employee.insert', emplName);
