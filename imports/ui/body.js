@@ -2,46 +2,50 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 
-import { Employee } from '../api/employees.js';
+import { Tasks } from '../api/tasks.js';
 
-import './employee.js';
+import './task.js';
 import './body.html';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
-  Meteor.subscribe('employee');
+  Meteor.subscribe('tasks');
 });
 
 Template.body.helpers({
-  employee() {
+  tasks() {
     const instance = Template.instance();
-    // return all of the employees
-    return Employee.find({}, {sort: {createdAt: -1} });
+    if (instance.state.get('hideCompleted')) {
+      // If hide completed is checked, filter tasks
+      return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
+    }
+    // Otherwise, return all of the tasks
+    return Tasks.find({}, { sort: { createdAt: -1 } });
+  },
+  incompleteCount() {
+    return Tasks.find({ checked: { $ne: true } }).count();
   },
 });
-// SUBMIT FUNCTION DOES NOT WORK
+
 Template.body.events({
-  'submit .new-employee'(event) {
-    // Prevent default browser form submit (no clue what this does)
+  'submit .new-task'(event) {
+    // Prevent default browser form submit
     event.preventDefault();
 
-    // Get value from form element (pull data from form)
+    // Get value from form element
     const target = event.target;
-    const emplId = target.emplId.value;
-    const emplName = target.emplName.value;
-    const salary = target.salary.value;
-    const title = target.title.value;
-    // Insert an employee into the collection (the database)
-    Meteor.call('employee.insert', emplId);
-    Meteor.call('employee.insert', emplName);
-    Meteor.call('employee.insert', salary);
-    Meteor.call('employee.insert', title);
+    const text = target.text.value;
+    const time = target.time.value;
+
+    // Insert a task into the collection
+    Meteor.call('tasks.insert', {
+      text,
+      time,
+    });
 
     // Clear form
-    target.emplId.value = '';
-    target.emplName.value = '';
-    target.salary.value = '';
-    target.title.value = '';
+    target.text.value = '';
+    target.time.value = '';
   },
   'change .hide-completed input'(event, instance) {
     instance.state.set('hideCompleted', event.target.checked);
